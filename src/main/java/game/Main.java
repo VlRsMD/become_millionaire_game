@@ -34,49 +34,65 @@ public class Main {
         System.out.println("Sign up successful");
     }
 
-    public static List<Integer> rand_i(int length) {
-        List<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i<length; i++) {
-            list.add(i);
+    public static int score;
+
+    public static void answer_question(Question question, int level) throws InterruptedException {
+        System.out.println("Level " + level + " question: " + question.question);
+        for (int j = 0; j < question.answersOptions.length; j++) {
+            int option_nr = j+1;
+            System.out.println(option_nr + ". " + question.answersOptions[j]);
         }
-        Collections.shuffle(list);
-        return list;
+        System.out.println("Introduce the number of the correct answer: ");
+        Scanner scan = new Scanner(System.in);
+        int id = scan.nextInt();
+        if (id == question.rightOption) {
+            score=score+question.score;
+            db_actions.insert(valid_username, score);
+            System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + score + " points." + "\u001B[0m");
+            if (score == 30) {
+                System.out.println("\u001B[33m" + "Congratulations! You have just become a millionaire!" + "\u001B[0m");
+                int reset_score = 0;
+                db_actions.insert(valid_username, reset_score);
+                Thread.sleep(1000);
+                System.exit(0);
+            }
+        } else {
+            score=0;
+            db_actions.insert(valid_username, score);
+            System.out.println("\u001B[31m" + "Unfortunately you have answered incorrectly. You may wish to try the game once again!" + "\u001B[0m");
+            Thread.sleep(1000);
+            System.exit(0);
+        }
     }
 
     public static void play() throws SQLException, InterruptedException {
-        List<Integer> list_r = rand_i(all_questions.game_questions().length);
-        int score=0;
-        List<Integer> list = new ArrayList<Integer>();
-        for(int i=0; i<all_questions.game_questions().length; i++) {
-            int index = list_r.get(i);
-            Question rand_q = all_questions.game_questions()[index];
-            int question_nr = i+1;
-            System.out.println("Question " + question_nr + ": " + rand_q.question);
-            for (int j = 0; j < rand_q.answersOptions.length; j++) {
-                int option_nr = j+1;
-                System.out.println(option_nr + ". " + rand_q.answersOptions[j]);
-            }
-            System.out.println("Introduce the number of the correct answer: ");
-            Scanner scan = new Scanner(System.in);
-            int id = scan.nextInt();
-            if (id == rand_q.rightOption) {
-                score++;
-                db_actions.insert(valid_username, score);
-                System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + score + " points." + "\u001B[0m");
-                if (score == all_questions.game_questions().length) {
-                    System.out.println("\u001B[33m" + "Congratulations! You have just become a millionaire!" + "\u001B[0m");
-                    int reset_score = 0;
-                    db_actions.insert(valid_username, reset_score);
-                    break;
-                }
-            } else {
-                score=0;
-                db_actions.insert(valid_username, score);
-                System.out.println("\u001B[31m" + "Unfortunately you have answered incorrectly. You may wish to try the game once again!" + "\u001B[0m");
-                Thread.sleep(1000);
-                break;
-            }
-        }
+        score=0;
+        Random rand = new Random();
+        // random level 1 question
+        int r1 = rand.nextInt(3);
+        Question q1 = all_questions.level_1()[r1];
+        int l1 = 1;
+        answer_question(q1, l1);
+        // random level 2 question
+        int r2 = rand.nextInt(3);
+        Question q2 = all_questions.level_2()[r2];
+        int l2 = 2;
+        answer_question(q2, l2);
+        // random level 3 question
+        int r3 = rand.nextInt(3);
+        Question q3 = all_questions.level_3()[r3];
+        int l3 = 3;
+        answer_question(q3, l3);
+        // random level 4 question
+        int r4 = rand.nextInt(3);
+        Question q4 = all_questions.level_4()[r4];
+        int l4 = 4;
+        answer_question(q4, l4);
+        // random level 5 question
+        int r5 = rand.nextInt(3);
+        Question q5 = all_questions.level_5()[r5];
+        int l5 = 5;
+        answer_question(q5, l5);
     }
 
     public static void main(String[] args) throws SQLException, InterruptedException {

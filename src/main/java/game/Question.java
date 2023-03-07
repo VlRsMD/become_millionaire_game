@@ -5,12 +5,14 @@ public class Question {
     String question;
     String [] answersOptions;
     int rightOption;
+    int score;
 
-    public Question(int id, String question, String[] answersOptions, int rightOption) {
+    public Question(int id, String question, String[] answersOptions, int rightOption, int score) {
         this.id = id;
         this.question = question;
         this.answersOptions = answersOptions;
         this.rightOption = rightOption;
+        this.score = score;
     }
 
     public int getId() {
@@ -43,5 +45,13 @@ public class Question {
 
     public void setRightOption(int rightOptionInd) {
         this.rightOption = rightOptionInd;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
