@@ -6,26 +6,35 @@ import java.util.*;
 public class Main {
     public static String valid_username;
 
+    // method to log the user in
     public static void log_in() throws SQLException {
         System.out.println("Introduce your username: ");
         Scanner scan =  new Scanner(System.in);
         String username = scan.nextLine();
+        // in case the username introduced is valid
         if (db_actions.check_if_present(username) == 1) {
             System.out.println("Log in successful.");
             valid_username = username;
-        } else {
+        }
+        // in case the username introduced is invalid
+        else {
             System.out.println("Invalid username. Try again or create a new account instead? [Try again/Sign up]");
             Scanner scan_1 =  new Scanner(System.in);
             String answer = scan_1.nextLine();
+            // try to log in once again
             if (answer.equals("Try again")) {
                 log_in();
-            } else if (answer.equals("Sign up")) {
+            }
+            // switch to the signup procedure
+            else if (answer.equals("Sign up")) {
                 sign_up();
             }
         }
     }
 
+    // method to create a new account
     public static void sign_up () throws SQLException {
+        // create a new account given the new player's username
         System.out.println("Please create an account by introducing your username: ");
         Scanner scan =  new Scanner(System.in);
         String username = scan.nextLine();
@@ -37,7 +46,9 @@ public class Main {
     public static int score;
 
     public static void answer_question(Question question, int level) throws InterruptedException {
+        // print out the level of current question and the question itself
         System.out.println("Level " + level + " question: " + question.question);
+        // print out answer options
         for (int j = 0; j < question.answersOptions.length; j++) {
             int option_nr = j+1;
             System.out.println(option_nr + ". " + question.answersOptions[j]);
@@ -45,22 +56,31 @@ public class Main {
         System.out.println("Introduce the number of the correct answer: ");
         Scanner scan = new Scanner(System.in);
         int id = scan.nextInt();
+        // in case the answer introduced is correct
         if (id == question.rightOption) {
             score=score+question.score;
             db_actions.insert(valid_username, score);
             System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + score + " points." + "\u001B[0m");
+            // if the score of 30 points is reached, player becomes a millionaire
             if (score == 30) {
+                // print out congratulation message
                 System.out.println("\u001B[33m" + "Congratulations! You have just become a millionaire!" + "\u001B[0m");
+                // reset the player's score to 0 so that the player can play the game once again from the beginning
                 int reset_score = 0;
                 db_actions.insert(valid_username, reset_score);
                 Thread.sleep(1000);
+                // terminate game
                 System.exit(0);
             }
-        } else {
+        }
+        // in case the answer introduced is incorrect
+        else {
+            // score becomes 0
             score=0;
             db_actions.insert(valid_username, score);
             System.out.println("\u001B[31m" + "Unfortunately you have answered incorrectly. You may wish to try the game once again!" + "\u001B[0m");
             Thread.sleep(1000);
+            // terminate game
             System.exit(0);
         }
     }

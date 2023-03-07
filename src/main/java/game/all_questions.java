@@ -1,6 +1,7 @@
 package game;
 
 public class all_questions {
+    // level 1 questions
     public static Question [] level_1() {
         int score = 2;
         // 1st question
@@ -39,6 +40,7 @@ public class all_questions {
         return questions;
     }
 
+    // level 2 questions
     public static Question [] level_2() {
         int score = 4;
         // 1st question
@@ -77,6 +79,7 @@ public class all_questions {
         return questions;
     }
 
+    // level 3 questions
     public static Question [] level_3() {
         int score = 6;
         // 1st question
@@ -115,6 +118,7 @@ public class all_questions {
         return questions;
     }
 
+    // level 4 questions
     public static Question [] level_4() {
         int score = 8;
         // 1st question
@@ -153,6 +157,7 @@ public class all_questions {
         return questions;
     }
 
+    // level 5 questions
     public static Question [] level_5() {
         int score = 10;
         // 1st question
