@@ -58,6 +58,7 @@ public class Main {
         int id = scan.nextInt();
         // in case the answer introduced is correct
         if (id == question.rightOption) {
+            // update the player's score
             score=score+question.score;
             db_actions.insert(valid_username, score);
             System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + score + " points." + "\u001B[0m");
