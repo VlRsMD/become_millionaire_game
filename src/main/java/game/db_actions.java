@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class db_actions {
+    // establish connection to database
     public static Connection connect() {
         String url = "jdbc:sqlite:identifier.sqlite";
         Connection conn = null;
@@ -20,6 +21,7 @@ public class db_actions {
         return conn;
     }
 
+    // update the score of a player
     public static void insert(String username, int score) {
         String sql = "UPDATE player SET score=? WHERE username=?";
         try (Connection conn = db_actions.connect();
@@ -32,6 +34,7 @@ public class db_actions {
         }
     }
 
+    // create a new player account
     public static void create_player(String username) {
         String sql = "INSERT INTO player(id, username, score) VALUES(?, ?, ?)";
         try (Connection conn = db_actions.connect();
@@ -50,6 +53,7 @@ public class db_actions {
         }
     }
 
+    // check if player with a particular username can be found in the database records
     public static int check_if_present(String username) throws SQLException {
         Connection conn = db_actions.connect();
         Statement stmt = conn.createStatement();
