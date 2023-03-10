@@ -6,6 +6,7 @@ import java.util.List;
 
 public class db_actions {
     // establish connection to database
+    // getConnection
     public static Connection connect() {
         String url = "jdbc:sqlite:identifier.sqlite";
         Connection conn = null;
@@ -22,7 +23,8 @@ public class db_actions {
     }
 
     // update the score of a player
-    public static void insert(String username, int score) {
+    // updateScore
+    public static void insert(String username, int score) throws SQLException {
         String sql = "UPDATE player SET score=? WHERE username=?";
         try (Connection conn = db_actions.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -35,6 +37,7 @@ public class db_actions {
     }
 
     // create a new player account
+    // createPlayer
     public static void create_player(String username) {
         String sql = "INSERT INTO player(id, username, score) VALUES(?, ?, ?)";
         try (Connection conn = db_actions.connect();
@@ -42,7 +45,7 @@ public class db_actions {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT count(*) FROM player");
             rs.next();
-            int id = rs.getInt("count(*)")+1;
+            int id = rs.getInt("count(*)") + 1;
             int score = 0;
             pstmt.setInt(1, id);
             pstmt.setString(2, username);
@@ -61,8 +64,8 @@ public class db_actions {
         ResultSetMetaData rsmd = res.getMetaData();
         int col_c = rsmd.getColumnCount();
         List<String> list = new ArrayList<String>();
-        while(res.next()) {
-            for (int i = 1; i<=col_c; i++) {
+        while (res.next()) {
+            for (int i = 1; i <= col_c; i++) {
                 list.add(res.getString(i));
             }
         }

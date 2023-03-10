@@ -1,26 +1,26 @@
 package game;
 
-public class Question {
-    int id;
-    String question;
-    String [] answersOptions;
-    int rightOption;
-    int score;
+import java.util.UUID;
 
-    public Question(int id, String question, String[] answersOptions, int rightOption, int score) {
-        this.id = id;
+public class Question {
+    private String uuid;
+    private String question;
+    private Answer [] answersOptions;
+    private int score;
+
+    public Question(String question, Answer[] answersOptions, int score) {
+        this.uuid = UUID.randomUUID().toString();
         this.question = question;
         this.answersOptions = answersOptions;
-        this.rightOption = rightOption;
         this.score = score;
     }
 
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getQuestion() {
@@ -31,20 +31,12 @@ public class Question {
         this.question = question;
     }
 
-    public String[] getAnswersOptions() {
+    public Answer[] getAnswersOptions() {
         return answersOptions;
     }
 
-    public void setAnswersOptions(String[] answersOptions) {
+    public void setAnswersOptions(Answer[] answersOptions) {
         this.answersOptions = answersOptions;
-    }
-
-    public int getRightOption() {
-        return rightOption;
-    }
-
-    public void setRightOption(int rightOptionInd) {
-        this.rightOption = rightOptionInd;
     }
 
     public int getScore() {
