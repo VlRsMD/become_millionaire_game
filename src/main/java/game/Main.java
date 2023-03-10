@@ -46,14 +46,107 @@ public class Main {
         System.out.println("Sign up successful");
     }
 
-    public static void incorrect_answer(gameSession gS) throws SQLException, InterruptedException {
+    public static void correct_answer (gameSession gS, Question question) throws SQLException {
+        // update the player's score
+        gS.setScore(gS.getScore()+question.getScore());
+        db_actions.insert(gS.getUsername(), gS.getScore());
+        System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + gS.getScore() + " points." + "\u001B[0m");
+        // if the score of 30 points is reached, player becomes a millionaire
+        if (gS.getScore() == 30) {
+            // print out congratulation message
+            System.out.println("\u001B[33m" + "Congratulations! You have just become a millionaire!" + "\u001B[0m");
+            // terminate game
+            System.exit(0);
+        }
+    }
+
+    public static void incorrect_answer(gameSession gS) throws SQLException {
         gS.setScore(0);
         db_actions.insert(gS.getUsername(), gS.getScore());
         System.out.println("\u001B[31m" + "Unfortunately you have answered incorrectly. You may wish to try the game once again!" + "\u001B[0m");
-        Thread.sleep(1000);
         // terminate game
         System.exit(0);
     }
+
+    public static int useHelp;
+
+    public static void phoneFriend (gameSession gS, Question question /*, List<Answer> list*/) throws SQLException {
+        for (int i=0; i<question.getAnswersOptions().length; i++) {
+            if (question.getAnswersOptions()[i].isCorrectness() == true) {
+                int id = i+1;
+                System.out.println("\u001B[34m" + "The right answer is nr. " + id + ": " + question.getAnswersOptions()[i].getAnswer()+"."  + "\u001B[0m");
+                break;
+            }
+        }
+        gS.setScore(gS.getScore()+question.getScore());
+        db_actions.insert(gS.getUsername(), gS.getScore());
+        System.out.println("\u001B[32m" + "Your current score is " + gS.getScore() + " points." + "\u001B[0m");
+        useHelp ++;
+    }
+
+    public static void askAudience (gameSession gS, Question question /*, List<Answer> list*/) throws SQLException, InterruptedException, InputMismatchException {
+        for(int i=0; i<question.getAnswersOptions().length; i++) {
+            int id = i+1;
+            System.out.println("\u001B[34m" + id + ". " + question.getAnswersOptions()[i].getAnswer() + " - " + question.getAnswersOptions()[i].getDistributionPercentage()+"%" + "\u001B[0m");
+        }
+        System.out.println("Choose an option from the above");
+        String id = scanString();
+        if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
+            // in case the answer introduced is correct
+            if (question.getAnswersOptions()[Integer.parseInt(id) - 1].isCorrectness() == true) {
+                correct_answer(gS, question);
+            } else {
+                incorrect_answer(gS);
+            }
+        } else {
+            System.out.println("Invalid input.");
+        }
+        useHelp ++;
+    }
+
+    public static void fiftyFifty (gameSession gS, Question question /*, List<Answer> list*/) throws SQLException, InterruptedException, InputMismatchException {
+        int rightAnswerIndex = 0;
+        int wrongAnswerIndex = 0;
+        for (int i=0; i<question.getAnswersOptions().length; i++) {
+            if (question.getAnswersOptions()[i].isCorrectness() == true) {
+                rightAnswerIndex = i;
+                break;
+            }
+        }
+        List<Answer> wrongAnswersList = new ArrayList<Answer>();
+        for (int i=0; i<question.getAnswersOptions().length; i++) {
+            if(question.getAnswersOptions()[i].isCorrectness() == false) {
+                wrongAnswersList.add(question.getAnswersOptions()[i]);
+            }
+        }
+        Random rand = new Random();
+        int r = rand.nextInt(3);
+        Answer wrongAnswer = wrongAnswersList.get(r);
+        for (int i=0; i<question.getAnswersOptions().length; i++) {
+            if(question.getAnswersOptions()[i].getAnswer() == wrongAnswer.getAnswer()) {
+                wrongAnswerIndex = i;
+                break;
+            }
+        }
+        int rightAnswerID = rightAnswerIndex+1;
+        int wrongAnswerID = wrongAnswerIndex+1;
+        System.out.println("\u001B[34m" + rightAnswerID + ". " + question.getAnswersOptions()[rightAnswerIndex].getAnswer() + "\u001B[0m");
+        System.out.println("\u001B[34m" + wrongAnswerID + ". " + question.getAnswersOptions()[wrongAnswerIndex].getAnswer() + "\u001B[0m");
+        System.out.println("Choose an option from the above");
+        String id = scanString();
+        if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
+            // in case the answer introduced is correct
+            if (question.getAnswersOptions()[Integer.parseInt(id) - 1].isCorrectness() == true) {
+                correct_answer(gS, question);
+            } else {
+                incorrect_answer(gS);
+            }
+        } else {
+            System.out.println("Invalid input.");
+        }
+        useHelp ++;
+    }
+
 
     public static void answer_question(gameSession gS, Question question, int level) throws InterruptedException, SQLException, InputMismatchException {
         // print out the level of current question and the question itself
@@ -63,37 +156,44 @@ public class Main {
             int option_nr = j+1;
             System.out.println(option_nr + ". " + question.getAnswersOptions()[j].getAnswer());
         }
-        System.out.println("Introduce the number of the correct answer: ");
-        String id = scanString();
-        if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
-            // in case the answer introduced is correct
-            if (question.getAnswersOptions()[Integer.parseInt(id)-1].isCorrectness() == true) {
-                // update the player's scoreN
-                gS.setScore(gS.getScore()+question.getScore());
-                db_actions.insert(gS.getUsername(), gS.getScore());
-                System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + gS.getScore() + " points." + "\u001B[0m");
-                // if the score of 30 points is reached, player becomes a millionaire
-                if (gS.getScore() == 30) {
-                    // print out congratulation message
-                    System.out.println("\u001B[33m" + "Congratulations! You have just become a millionaire!" + "\u001B[0m");
-                    Thread.sleep(1000);
-                    // terminate game
-                    System.exit(0);
+        if (useHelp == 0) {
+            System.out.println("Introduce the number of the correct answer. You can also use once one of the following help options: 'Ask the Audience', 'Phone a Friend', '50/50'. In order to choose the 'Ask the Audience' option type 'a'. In order to choose the 'Phone a Friend' option type 'p'. In order to choose the '50/50' option type 'f'.");
+            String id = scanString();
+            if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
+                // in case the answer introduced is correct
+                if (question.getAnswersOptions()[Integer.parseInt(id)-1].isCorrectness() == true) {
+                    correct_answer(gS, question);
                 }
+                // in case the answer introduced is incorrect
+                else {
+                    incorrect_answer(gS);
+                }
+            } else if (id.equals("a")) {
+                askAudience(gS, question);
+            } else if (id.equals("p")) {
+                phoneFriend(gS, question);
+            } else if (id.equals("f")) {
+                fiftyFifty(gS, question);
+            } else {
+                System.out.println("Invalid input.");
             }
-            // in case the answer introduced is incorrect
-            else {
-                incorrect_answer(gS);
-            }
-        } else if (id.equals("a")) {
-
-        } else if (id.equals("p")) {
-
-        } else if (id.equals("f")) {
-
         } else {
-            System.out.println("Invalid input.");
+            System.out.println("Introduce the number of the correct answer: ");
+            String id = scanString();
+            if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
+                // in case the answer introduced is correct
+                if (question.getAnswersOptions()[Integer.parseInt(id)-1].isCorrectness() == true) {
+                    correct_answer(gS, question);
+                }
+                // in case the answer introduced is incorrect
+                else {
+                    incorrect_answer(gS);
+                }
+            } else {
+                System.out.println("Invalid input.");
+            }
         }
+
      }
 
     public static void play(gameSession gS) throws SQLException, InterruptedException {
