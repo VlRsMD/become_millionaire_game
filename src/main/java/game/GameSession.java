@@ -1,8 +1,23 @@
 package game;
 
-public class gameSession {
+import java.util.UUID;
+
+public class GameSession {
+    private String uuid;
     private String username;
     private int score;
+
+    public GameSession() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getUsername() {
         return username;

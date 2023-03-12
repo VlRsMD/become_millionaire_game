@@ -11,13 +11,16 @@ public class Main {
     }
 
     // method to log the user in
-    public static void log_in(gameSession gS) throws SQLException, InputMismatchException {
+    public static void log_in(GameSession gS) throws SQLException, InputMismatchException {
         System.out.println("Introduce your username: ");
         String username = scanString();
         // in case the username introduced is valid
-        if (db_actions.check_if_present(username) == 1) {
-            System.out.println("Log in successful.");
+        if (DatabaseActions.checkPresence(username) == 1) {
+            long timestamp = System.currentTimeMillis();
             gS.setUsername(username);
+            String playerID = DatabaseActions.getPlayerID(username);
+            DatabaseActions.createRecord(gS.getUuid(), playerID, timestamp);
+            System.out.println("Log in successful.");
         }
         // in case the username introduced is invalid
         else {
@@ -32,24 +35,28 @@ public class Main {
                 sign_up(gS);
             } else {
                 System.out.println("Invalid input");
+                System.exit(0);
             }
         }
     }
 
     // method to create a new account
-    public static void sign_up (gameSession gS) throws SQLException, InputMismatchException {
+    public static void sign_up (GameSession gS) throws SQLException, InputMismatchException {
         // create a new account given the new player's username
         System.out.println("Please create an account by introducing your username: ");
         String username = scanString();
-        db_actions.create_player(username);
+        long timestamp = System.currentTimeMillis();
+        Player player = new Player(username);
+        DatabaseActions.createPlayer(player.getUuid(), username);
         gS.setUsername(username);
+        DatabaseActions.createRecord(gS.getUuid(), player.getUuid(), timestamp);
         System.out.println("Sign up successful");
     }
 
-    public static void correct_answer (gameSession gS, Question question) throws SQLException {
+    public static void correct_answer (GameSession gS, Question question) throws SQLException {
         // update the player's score
         gS.setScore(gS.getScore()+question.getScore());
-        db_actions.insert(gS.getUsername(), gS.getScore());
+        DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         System.out.println("\u001B[32m" + "Congratulations! You have answered this question correctly. Your current score is " + gS.getScore() + " points." + "\u001B[0m");
         // if the score of 30 points is reached, player becomes a millionaire
         if (gS.getScore() == 30) {
@@ -60,9 +67,9 @@ public class Main {
         }
     }
 
-    public static void incorrect_answer(gameSession gS) throws SQLException {
+    public static void incorrect_answer(GameSession gS) throws SQLException {
         gS.setScore(0);
-        db_actions.insert(gS.getUsername(), gS.getScore());
+        DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         System.out.println("\u001B[31m" + "Unfortunately you have answered incorrectly. You may wish to try the game once again!" + "\u001B[0m");
         // terminate game
         System.exit(0);
@@ -70,7 +77,7 @@ public class Main {
 
     public static int useHelp;
 
-    public static void phoneFriend (gameSession gS, Question question, List<Answer> list) throws SQLException {
+    public static void phoneFriend (GameSession gS, Question question, List<Answer> list) throws SQLException {
         for (int i=0; i<list.size(); i++) {
             if (list.get(i).isCorrectness() == true) {
                 int id = i+1;
@@ -79,12 +86,12 @@ public class Main {
             }
         }
         gS.setScore(gS.getScore()+question.getScore());
-        db_actions.insert(gS.getUsername(), gS.getScore());
+        DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         System.out.println("\u001B[32m" + "Your current score is " + gS.getScore() + " points." + "\u001B[0m");
         useHelp ++;
     }
 
-    public static void askAudience (gameSession gS, Question question, List<Answer> list) throws SQLException, InterruptedException, InputMismatchException {
+    public static void askAudience (GameSession gS, Question question, List<Answer> list) throws SQLException, InterruptedException, InputMismatchException {
         for(int i=0; i<list.size(); i++) {
             int id = i+1;
             System.out.println("\u001B[34m" + id + ". " + list.get(i).getAnswer() + " - " + list.get(i).getDistributionPercentage()+"%" + "\u001B[0m");
@@ -100,11 +107,12 @@ public class Main {
             }
         } else {
             System.out.println("Invalid input.");
+            System.exit(0);
         }
         useHelp ++;
     }
 
-    public static void fiftyFifty (gameSession gS, Question question, List<Answer> list) throws SQLException, InterruptedException, InputMismatchException {
+    public static void fiftyFifty (GameSession gS, Question question, List<Answer> list) throws SQLException, InterruptedException, InputMismatchException {
         int rightAnswerIndex = 0;
         int wrongAnswerIndex = 0;
         for (int i=0; i<list.size(); i++) {
@@ -154,12 +162,13 @@ public class Main {
             }
         } else {
             System.out.println("Invalid input.");
+            System.exit(0);
         }
         useHelp ++;
     }
 
 
-    public static void answer_question(gameSession gS, Question question, int level) throws InterruptedException, SQLException, InputMismatchException {
+    public static void answer_question(GameSession gS, Question question, int level) throws InterruptedException, SQLException, InputMismatchException {
         // print out the level of current question and the question itself
         System.out.println("Level " + level + " question: " + question.getQuestion());
         List<Answer> answersList = new ArrayList<Answer>();
@@ -192,6 +201,7 @@ public class Main {
                 fiftyFifty(gS, question, answersList);
             } else {
                 System.out.println("Invalid input.");
+                System.exit(0);
             }
         } else {
             System.out.println("Introduce the number of the correct answer: ");
@@ -207,14 +217,15 @@ public class Main {
                 }
             } else {
                 System.out.println("Invalid input.");
+                System.exit(0);
             }
         }
 
      }
 
-    public static void play(gameSession gS) throws SQLException, InterruptedException {
+    public static void play(GameSession gS) throws SQLException, InterruptedException {
         gS.setScore(0);
-        db_actions.insert(gS.getUsername(), gS.getScore());
+        DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         for (int i = 0; i<QuestionsBank.questions().size(); i++) {
             int level = i+1;
             Random rand = new Random();
@@ -225,7 +236,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws SQLException, InterruptedException, InputMismatchException {
-        gameSession gS = new gameSession();
+        GameSession gS = new GameSession();
         System.out.println("Welcome to the game 'Become a millionaire!'");
         System.out.println("Do you already have an account? [Yes/No]");
         String y_n = scanString();
@@ -237,6 +248,7 @@ public class Main {
             play(gS);
         } else {
             System.out.println("Invalid input.");
+            System.exit(0);
         }
     }
 }
