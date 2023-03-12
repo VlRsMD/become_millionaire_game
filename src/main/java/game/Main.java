@@ -11,7 +11,7 @@ public class Main {
     }
 
     // method to log the user in
-    public static void log_in(GameSession gS) throws SQLException, InputMismatchException {
+    public static void logIn(GameSession gS) throws SQLException, InputMismatchException {
         System.out.println("Introduce your username: ");
         String username = scanString();
         // in case the username introduced is valid
@@ -28,11 +28,11 @@ public class Main {
             String answer = scanString();
             // try to log in once again
             if (answer.equals("Try again")) {
-                log_in(gS);
+                logIn(gS);
             }
             // switch to the signup procedure
             else if (answer.equals("Sign up")) {
-                sign_up(gS);
+                signUp(gS);
             } else {
                 System.out.println("Invalid input");
                 System.exit(0);
@@ -41,7 +41,7 @@ public class Main {
     }
 
     // method to create a new account
-    public static void sign_up (GameSession gS) throws SQLException, InputMismatchException {
+    public static void signUp(GameSession gS) throws SQLException, InputMismatchException {
         // create a new account given the new player's username
         System.out.println("Please create an account by introducing your username: ");
         String username = scanString();
@@ -53,7 +53,7 @@ public class Main {
         System.out.println("Sign up successful");
     }
 
-    public static void correct_answer (GameSession gS, Question question) throws SQLException {
+    public static void correctAnswer(GameSession gS, Question question) throws SQLException {
         // update the player's score
         gS.setScore(gS.getScore()+question.getScore());
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
@@ -67,7 +67,7 @@ public class Main {
         }
     }
 
-    public static void incorrect_answer(GameSession gS) throws SQLException {
+    public static void incorrectAnswer(GameSession gS) throws SQLException {
         gS.setScore(0);
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         System.out.println("\u001B[31m" + "Unfortunately you have answered incorrectly. You may wish to try the game once again!" + "\u001B[0m");
@@ -101,9 +101,9 @@ public class Main {
         if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
             // in case the answer introduced is correct
             if (list.get(Integer.parseInt(id) - 1).isCorrectness() == true) {
-                correct_answer(gS, question);
+                correctAnswer(gS, question);
             } else {
-                incorrect_answer(gS);
+                incorrectAnswer(gS);
             }
         } else {
             System.out.println("Invalid input.");
@@ -156,9 +156,9 @@ public class Main {
         if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
             // in case the answer introduced is correct
             if (list.get(Integer.parseInt(id) - 1).isCorrectness() == true) {
-                correct_answer(gS, question);
+                correctAnswer(gS, question);
             } else {
-                incorrect_answer(gS);
+                incorrectAnswer(gS);
             }
         } else {
             System.out.println("Invalid input.");
@@ -168,7 +168,7 @@ public class Main {
     }
 
 
-    public static void answer_question(GameSession gS, Question question, int level) throws InterruptedException, SQLException, InputMismatchException {
+    public static void answerQuestion(GameSession gS, Question question, int level) throws InterruptedException, SQLException, InputMismatchException {
         // print out the level of current question and the question itself
         System.out.println("Level " + level + " question: " + question.getQuestion());
         List<Answer> answersList = new ArrayList<Answer>();
@@ -187,11 +187,11 @@ public class Main {
             if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
                 // in case the answer introduced is correct
                 if (answersList.get(Integer.parseInt(id)-1).isCorrectness() == true) {
-                    correct_answer(gS, question);
+                    correctAnswer(gS, question);
                 }
                 // in case the answer introduced is incorrect
                 else {
-                    incorrect_answer(gS);
+                    incorrectAnswer(gS);
                 }
             } else if (id.equals("a")) {
                 askAudience(gS, question, answersList);
@@ -209,11 +209,11 @@ public class Main {
             if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
                 // in case the answer introduced is correct
                 if (answersList.get(Integer.parseInt(id)-1).isCorrectness() == true) {
-                    correct_answer(gS, question);
+                    correctAnswer(gS, question);
                 }
                 // in case the answer introduced is incorrect
                 else {
-                    incorrect_answer(gS);
+                    incorrectAnswer(gS);
                 }
             } else {
                 System.out.println("Invalid input.");
@@ -231,7 +231,7 @@ public class Main {
             Random rand = new Random();
             int r = rand.nextInt(3);
             Question question = QuestionsBank.questions().get(i)[r];
-            answer_question(gS, question, level);
+            answerQuestion(gS, question, level);
         }
     }
 
@@ -241,10 +241,10 @@ public class Main {
         System.out.println("Do you already have an account? [Yes/No]");
         String y_n = scanString();
         if (y_n.equals("Yes")) {
-            log_in(gS);
+            logIn(gS);
             play(gS);
         } else if (y_n.equals("No")) {
-            sign_up(gS);
+            signUp(gS);
             play(gS);
         } else {
             System.out.println("Invalid input.");
