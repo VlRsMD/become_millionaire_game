@@ -20,7 +20,7 @@ public class Help {
         useHelp ++;
     }
 
-    public static void askAudience (GameSession gS, Question question, List<Answer> list) throws SQLException, InterruptedException, InputMismatchException {
+    public static void askAudience (GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
         for(int i=0; i<list.size(); i++) {
             int id = i+1;
             System.out.println("\u001B[34m" + id + ". " + list.get(i).getAnswer() + " - " + list.get(i).getDistributionPercentage()+"%" + "\u001B[0m");
@@ -41,7 +41,7 @@ public class Help {
         useHelp ++;
     }
 
-    public static void fiftyFifty (GameSession gS, Question question, List<Answer> list) throws SQLException, InterruptedException, InputMismatchException {
+    public static void fiftyFifty (GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
         int rightAnswerIndex = 0;
         int wrongAnswerIndex = 0;
         for (int i=0; i<list.size(); i++) {
