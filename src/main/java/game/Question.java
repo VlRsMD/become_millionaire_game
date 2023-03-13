@@ -7,12 +7,14 @@ public class Question {
     private String question;
     private Answer [] answersOptions;
     private int score;
+    private int level;
 
-    public Question(String question, Answer[] answersOptions, int score) {
+    public Question(String question, Answer[] answersOptions, int score, int level) {
         this.uuid = UUID.randomUUID().toString();
         this.question = question;
         this.answersOptions = answersOptions;
         this.score = score;
+        this.level = level;
     }
 
     public String getUuid() {
@@ -46,4 +48,8 @@ public class Question {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public int getLevel() { return level; }
+
+    public void setLevel(int level) { this.level = level; }
 }
