@@ -6,6 +6,7 @@ public class QuestionsBank {
     public static List<Question[]> questions() {
         // level 1 questions
         int scoreLevel1 = 2;
+        int level1 = 1;
         // 1st question
         String question1 = "What is the capital of Germany?";
         Answer [] answers1 = new Answer [4];
@@ -28,9 +29,9 @@ public class QuestionsBank {
         answers3[2] = new Answer("Edinburgh", false, 24);
         answers3[3] = new Answer("Stockholm", false, 19);
         // creating level 1 questions
-        Question q1L1 = new Question(question1, answers1, scoreLevel1);
-        Question q2L1 = new Question(question2, answers2, scoreLevel1);
-        Question q3L1 = new Question(question3, answers3, scoreLevel1);
+        Question q1L1 = new Question(question1, answers1, scoreLevel1, level1);
+        Question q2L1 = new Question(question2, answers2, scoreLevel1, level1);
+        Question q3L1 = new Question(question3, answers3, scoreLevel1, level1);
         // array of level 1 questions
         Question [] questionsLevel1 = new Question [3];
         questionsLevel1[0] = q1L1;
@@ -39,6 +40,7 @@ public class QuestionsBank {
 
         // level 2 questions
         int scoreLevel2 = 4;
+        int level2 = 2;
         // 1st question
         String question4 = "How many official languages does Switzerland have?";
         Answer [] answers4 = new Answer [4];
@@ -61,9 +63,9 @@ public class QuestionsBank {
         answers6[2] = new Answer("1938", false, 18);
         answers6[3] = new Answer("1941", false, 20);
         // creating level 2 questions
-        Question q1L2 = new Question(question4, answers4, scoreLevel2);
-        Question q2L2 = new Question(question5, answers5, scoreLevel2);
-        Question q3L2 = new Question(question6, answers6, scoreLevel2);
+        Question q1L2 = new Question(question4, answers4, scoreLevel2, level2);
+        Question q2L2 = new Question(question5, answers5, scoreLevel2, level2);
+        Question q3L2 = new Question(question6, answers6, scoreLevel2, level2);
         // array of level 2 questions
         Question [] questionsLevel2 = new Question [3];
         questionsLevel2[0] = q1L2;
@@ -72,6 +74,7 @@ public class QuestionsBank {
 
         // level 3 questions
         int scoreLevel3 = 6;
+        int level3 = 3;
         // 1st question
         String question7 = "In which year did WW1 start?";
         Answer [] answers7 = new Answer [4];
@@ -94,9 +97,9 @@ public class QuestionsBank {
         answers9[2] = new Answer("1776", true, 36);
         answers9[3] = new Answer("1774", false, 19);
         // creating level 3 questions
-        Question q1L3 = new Question(question7, answers7, scoreLevel3);
-        Question q2L3 = new Question(question8, answers8, scoreLevel3);
-        Question q3L3 = new Question(question9, answers9, scoreLevel3);
+        Question q1L3 = new Question(question7, answers7, scoreLevel3, level3);
+        Question q2L3 = new Question(question8, answers8, scoreLevel3, level3);
+        Question q3L3 = new Question(question9, answers9, scoreLevel3, level3);
         // array of level 3 questions
         Question [] questionsLevel3 = new Question [3];
         questionsLevel3[0] = q1L3;
@@ -105,6 +108,7 @@ public class QuestionsBank {
 
         // level 4 questions
         int scoreLevel4 = 8;
+        int level4 = 4;
         // 1st question
         String question10 = "In which year did Ireland gain independence?";
         Answer [] answers10 = new Answer [4];
@@ -127,9 +131,9 @@ public class QuestionsBank {
         answers12[2] = new Answer("1773", false, 19);
         answers12[3] = new Answer("1772", false, 20);
         // creating level 4 questions
-        Question q1L4 = new Question(question10, answers10, scoreLevel4);
-        Question q2L4 = new Question(question11, answers11, scoreLevel4);
-        Question q3L4 = new Question(question12, answers12, scoreLevel4);
+        Question q1L4 = new Question(question10, answers10, scoreLevel4, level4);
+        Question q2L4 = new Question(question11, answers11, scoreLevel4, level4);
+        Question q3L4 = new Question(question12, answers12, scoreLevel4, level4);
         // array of level 4 questions
         Question [] questionsLevel4 = new Question [3];
         questionsLevel4[0] = q1L4;
@@ -138,8 +142,9 @@ public class QuestionsBank {
 
         // level 5 questions
         int scoreLevel5 = 10;
+        int level5 = 5;
         // 1st question
-        String question13 = "Which city is the capital of Lichtenstein?";
+        String question13 = "Which city is the capital of Liechtenstein?";
         Answer [] answers13 = new Answer [4];
         answers13[0] = new Answer("Bern", false, 20);
         answers13[1] = new Answer("Salzburg", false, 19);
@@ -160,9 +165,9 @@ public class QuestionsBank {
         answers15[2] = new Answer("1991", true, 36);
         answers15[3] = new Answer("1989", false, 19);
         // creating level 5 questions
-        Question q1L5 = new Question(question13, answers13, scoreLevel5);
-        Question q2L5 = new Question(question14, answers14, scoreLevel5);
-        Question q3L5 = new Question(question15, answers15, scoreLevel5);
+        Question q1L5 = new Question(question13, answers13, scoreLevel5, level5);
+        Question q2L5 = new Question(question14, answers14, scoreLevel5, level5);
+        Question q3L5 = new Question(question15, answers15, scoreLevel5, level5);
         // array of level 5 questions
         Question [] questionsLevel5 = new Question [3];
         questionsLevel5[0] = q1L5;
