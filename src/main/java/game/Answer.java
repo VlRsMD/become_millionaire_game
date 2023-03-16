@@ -2,13 +2,11 @@ package game;
 
 public class Answer {
     private String answer;
-    private boolean correctness;
-    private int distributionPercentage;
+    private boolean correct;
 
-    public Answer(String answer, boolean correctness, int distributionPercentage) {
+    public Answer(String answer, boolean correct) {
         this.answer = answer;
-        this.correctness = correctness;
-        this.distributionPercentage = distributionPercentage;
+        this.correct = correct;
     }
 
     public String getAnswer() {
@@ -19,19 +17,11 @@ public class Answer {
         this.answer = answer;
     }
 
-    public boolean isCorrectness() {
-        return correctness;
+    public boolean isCorrect() {
+        return correct;
     }
 
-    public void setCorrectness(boolean correctness) {
-        this.correctness = correctness;
-    }
-
-    public int getDistributionPercentage() {
-        return distributionPercentage;
-    }
-
-    public void setDistributionPercentage(int distributionPercentage) {
-        this.distributionPercentage = distributionPercentage;
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
     }
 }
