@@ -19,7 +19,7 @@ public class Game {
                 }
             }
             Question question = levelQuestions.get(r);
-            AnsweringQuestionHandling answeringQuestionHandling = new AnsweringQuestionHandling();
+            handlingOfAnsweringQuestion answeringQuestionHandling = new handlingOfAnsweringQuestion();
             answeringQuestionHandling.displayAndAnswerQuestion(gS, question, question.getLevel());
         }
     }

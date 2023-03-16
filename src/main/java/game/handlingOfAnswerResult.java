@@ -2,7 +2,7 @@ package game;
 
 import java.sql.SQLException;
 
-public class AnswerResultHandling {
+public class handlingOfAnswerResult {
     public void win() {
         // print out congratulation message
         System.out.println("\u001B[33m" + "Congratulations! You have just become a millionaire!" + "\u001B[0m");
