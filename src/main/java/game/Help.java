@@ -4,11 +4,14 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Help {
-    public static int useHelp;
+    public static int askAudienceUsage;
+    public static int phoneFriendUsage;
+    public static int fiftyFiftyUsage;
 
-    public static void phoneFriend (GameSession gS, Question question, List<Answer> list) throws SQLException {
+    public void phoneFriend (GameSession gS, Question question, List<Answer> list) throws SQLException {
+        phoneFriendUsage ++;
         for (int i=0; i<list.size(); i++) {
-            if (list.get(i).isCorrectness() == true) {
+            if (list.get(i).isCorrect() == true) {
                 int id = i+1;
                 System.out.println("\u001B[34m" + "The right answer is nr. " + id + ": " + list.get(i).getAnswer()+"."  + "\u001B[0m");
                 break;
@@ -17,42 +20,48 @@ public class Help {
         gS.setScore(gS.getScore()+question.getScore());
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         System.out.println("\u001B[32m" + "Your current score is " + gS.getScore() + " points." + "\u001B[0m");
-        useHelp ++;
     }
 
-    public static void askAudience (GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
-        for(int i=0; i<list.size(); i++) {
+    public void askAudience (GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
+        askAudienceUsage ++;
+        Random rand = new Random();
+        List<List<String>> distributionList = new ArrayList<List<String>>();
+        for(int k=0; k<list.size(); k++) {
+            List<String> distribution = new ArrayList<String>();
+            distribution.add(list.get(k).getAnswer());
+            if (list.get(k).isCorrect() == true) {
+                int r = 31 + rand.nextInt(4);
+                distribution.add(Integer.toString(r)+"%");
+            }
+            if (list.get(k).isCorrect() == false) {
+                int r = 18 + rand.nextInt(5);
+                distribution.add(Integer.toString(r)+"%");
+            }
+            distributionList.add(distribution);
+        }
+        AnsweringQuestionHandling answeringQuestionHandling = new AnsweringQuestionHandling();
+        for(int i=0; i<distributionList.size(); i++) {
             int id = i+1;
-            System.out.println("\u001B[34m" + id + ". " + list.get(i).getAnswer() + " - " + list.get(i).getDistributionPercentage()+"%" + "\u001B[0m");
+            System.out.println("\u001B[34m" + id + ". " + distributionList.get(i).get(0) + " - " + distributionList.get(i).get(1) + "\u001B[0m");
         }
         System.out.println("Choose an option from the above");
-        String id = Scan.scanString();
-        if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
-            // in case the answer introduced is correct
-            if (list.get(Integer.parseInt(id) - 1).isCorrectness() == true) {
-                QuestionAnswered.correctAnswer(gS, question);
-            } else {
-                QuestionAnswered.incorrectAnswer(gS);
-            }
-        } else {
-            System.out.println("Invalid input.");
-            System.exit(0);
-        }
-        useHelp ++;
+        answeringQuestionHandling.chooseAnswerOption(gS, question, list);
     }
 
-    public static void fiftyFifty (GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
+    public void displayFiftyFifty(GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
+        fiftyFiftyUsage ++;
+        AnsweringQuestionHandling answeringQuestionHandling = new AnsweringQuestionHandling();
         int rightAnswerIndex = 0;
         int wrongAnswerIndex = 0;
         for (int i=0; i<list.size(); i++) {
-            if (list.get(i).isCorrectness() == true) {
+            if (list.get(i).isCorrect() == true) {
                 rightAnswerIndex = i;
                 break;
             }
         }
         List<Answer> wrongAnswersList = new ArrayList<Answer>();
         for (int i=0; i<list.size(); i++) {
-            if(list.get(i).isCorrectness() == false) {
+            if(list.get(i).isCorrect() == false) {
                 wrongAnswersList.add(list.get(i));
             }
         }
@@ -81,18 +90,6 @@ public class Help {
             System.out.println("\u001B[34m" + twoOptions.get(i).get(0) + ". " + twoOptions.get(i).get(1) + "\u001B[0m");
         }
         System.out.println("Choose an option from the above");
-        String id = Scan.scanString();
-        if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
-            // in case the answer introduced is correct
-            if (list.get(Integer.parseInt(id) - 1).isCorrectness() == true) {
-                QuestionAnswered.correctAnswer(gS, question);
-            } else {
-                QuestionAnswered.incorrectAnswer(gS);
-            }
-        } else {
-            System.out.println("Invalid input.");
-            System.exit(0);
-        }
-        useHelp ++;
+        answeringQuestionHandling.chooseAnswerOption(gS, question, list);
     }
 }
