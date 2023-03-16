@@ -39,7 +39,7 @@ public class Help {
             }
             distributionList.add(distribution);
         }
-        AnsweringQuestionHandling answeringQuestionHandling = new AnsweringQuestionHandling();
+        handlingOfAnsweringQuestion answeringQuestionHandling = new handlingOfAnsweringQuestion();
         for(int i=0; i<distributionList.size(); i++) {
             int id = i+1;
             System.out.println("\u001B[34m" + id + ". " + distributionList.get(i).get(0) + " - " + distributionList.get(i).get(1) + "\u001B[0m");
@@ -50,7 +50,7 @@ public class Help {
 
     public void displayFiftyFifty(GameSession gS, Question question, List<Answer> list) throws SQLException, InputMismatchException {
         fiftyFiftyUsage ++;
-        AnsweringQuestionHandling answeringQuestionHandling = new AnsweringQuestionHandling();
+        handlingOfAnsweringQuestion answeringQuestionHandling = new handlingOfAnsweringQuestion();
         int rightAnswerIndex = 0;
         int wrongAnswerIndex = 0;
         for (int i=0; i<list.size(); i++) {

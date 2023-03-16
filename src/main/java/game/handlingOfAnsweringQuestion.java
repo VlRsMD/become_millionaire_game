@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class AnsweringQuestionHandling {
+public class handlingOfAnsweringQuestion {
     public void displayAndAnswerQuestion(GameSession gS, Question question, int level) throws SQLException {
         // print out the level of current question and the question itself
         System.out.println("Level " + level + " question: " + question.getQuestion());
@@ -25,7 +25,7 @@ public class AnsweringQuestionHandling {
 
     public void chooseAnswerOption(GameSession gS, Question question, List<Answer> answersList) throws SQLException {
         Help help = new Help();
-        AnswerResultHandling answerResultHandling = new AnswerResultHandling();
+        handlingOfAnswerResult answerResultHandling = new handlingOfAnswerResult();
         StringScanner scanner = new StringScanner();
         String id = scanner.scanString();
         if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
@@ -50,7 +50,7 @@ public class AnsweringQuestionHandling {
     }
 
     public void answerQuestion(GameSession gS, Question question, List<Answer> answersList) throws SQLException, InputMismatchException {
-        AnswerResultHandling answerResultHandling = new AnswerResultHandling();
+        handlingOfAnswerResult answerResultHandling = new handlingOfAnswerResult();
         if (Help.askAudienceUsage == 0 && Help.phoneFriendUsage == 0 && Help.fiftyFiftyUsage == 0) {
             System.out.println("Introduce the number of the correct answer. You can also use once each of the following help options: 'Ask the Audience', 'Phone a Friend', '50/50'. In order to choose the 'Ask the Audience' option type 'a'. In order to choose the 'Phone a Friend' option type 'p'. In order to choose the '50/50' option type 'f'.");
         }
