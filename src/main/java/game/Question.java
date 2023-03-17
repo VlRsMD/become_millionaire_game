@@ -9,14 +9,9 @@ public class Question {
     private int score;
     private int level;
 
-    public Question(String question, Answer[] answersOptions, int score, int level) {
+    public Question() {
         this.uuid = UUID.randomUUID().toString();
-        this.question = question;
-        this.answersOptions = answersOptions;
-        this.score = score;
-        this.level = level;
     }
-
     public String getUuid() {
         return uuid;
     }

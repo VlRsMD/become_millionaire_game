@@ -1,10 +1,11 @@
 package game;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
-    public void play(GameSession gS) throws SQLException {
+    public void play(GameSession gS) throws SQLException, IOException {
         gS.setScore(0);
         Random rand = new Random();
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
@@ -24,7 +25,7 @@ public class Game {
         }
     }
 
-    public void startGame(GameSession gS) throws SQLException {
+    public void startGame(GameSession gS) throws SQLException, IOException {
         Authentication authentication = new Authentication();
         StringScanner scanner = new StringScanner();
         String y_n = scanner.scanString();
@@ -43,7 +44,7 @@ public class Game {
     }
 
     // static
-    public static void main(String[] args) throws SQLException, InputMismatchException {
+    public static void main(String[] args) throws SQLException, InputMismatchException, IOException {
         Game game = new Game();
         GameSession gS = new GameSession();
         System.out.println("Welcome to the game 'Become a millionaire!'");
