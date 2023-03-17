@@ -10,7 +10,7 @@ public class Game {
         Random rand = new Random();
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         QuestionsBank questionsBank = new QuestionsBank();
-        for (int i = 0; i<questionsBank.getNumberOfLevels(); i++) {
+        for (int i = 0; i < questionsBank.getNumberOfLevels(); i ++) {
             int r = rand.nextInt(3);
             List<Question> levelQuestions = new ArrayList<Question>();
             for (int k = 0; k<questionsBank.createQuestions().size(); k++) {

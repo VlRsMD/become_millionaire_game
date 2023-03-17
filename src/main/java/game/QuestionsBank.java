@@ -24,7 +24,13 @@ public class QuestionsBank {
         return list;
     }
 
-    public int getNumberOfLevels() {
-        return 5;
+    public int getNumberOfLevels() throws IOException {
+        int max = createQuestions().get(0).getLevel();
+        for (int i = 1; i < createQuestions().size(); i ++) {
+            if (createQuestions().get(i).getLevel() > max) {
+                max = createQuestions().get(i).getLevel();
+            }
+        }
+        return max;
     }
 }
