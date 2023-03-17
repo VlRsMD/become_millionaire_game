@@ -16,7 +16,7 @@ public class handlingOfAnsweringQuestion {
         }
         Collections.shuffle(answersList);
         // print out answer options
-        for (int j = 0; j < answersList.size(); j++) {
+        for (int j = 0; j < answersList.size(); j ++) {
             int option_nr = j+1;
             System.out.println(option_nr + ". " + answersList.get(j).getAnswer());
         }
