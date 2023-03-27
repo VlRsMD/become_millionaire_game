@@ -4,33 +4,27 @@ import java.io.*;
 import java.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.internal.org.objectweb.asm.TypeReference;
 
 public class QuestionsBank {
-    public List<Question> createQuestions() throws IOException {
-        List<Question> list = new ArrayList<Question>();
-        String file = "questions.txt";
-        Scanner scanner = new Scanner(new File(file));
-        ObjectMapper mapper = new ObjectMapper();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            try {
-                Question question = mapper.readValue(line, Question.class);
-                list.add(question);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+    public List<Question> allQuestions;
+    public int numberOfLevels;
+
+    public QuestionsBank() {
+        QuestionsCollector questionsCollector = new QuestionsCollector();
+        try {
+            this.allQuestions = questionsCollector.collectQuestions();
+            this.numberOfLevels = questionsCollector.findNumberOfLevels();
+        } catch(IOException e) {
+            e.printStackTrace();
         }
-        scanner.close();
-        return list;
     }
 
-    public int getNumberOfLevels() throws IOException {
-        int max = createQuestions().get(0).getLevel();
-        for (int i = 1; i < createQuestions().size(); i ++) {
-            if (createQuestions().get(i).getLevel() > max) {
-                max = createQuestions().get(i).getLevel();
-            }
-        }
-        return max;
+    public List<Question> getAllQuestions() {
+        return allQuestions;
+    }
+
+    public int getNumberOfLevels() {
+        return numberOfLevels;
     }
 }
