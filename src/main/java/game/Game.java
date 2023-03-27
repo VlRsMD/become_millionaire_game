@@ -10,18 +10,22 @@ public class Game {
         Random rand = new Random();
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
         QuestionsBank questionsBank = new QuestionsBank();
+        List<Question> questionsList = questionsBank.getAllQuestions();
+        FiftyFiftyHelpOption fiftyFiftyHelpOption = new FiftyFiftyHelpOption();
+        AskAudienceHelpOption askAudienceHelpOption = new AskAudienceHelpOption();
+        PhoneFriendHelpOption phoneFriendHelpOption = new PhoneFriendHelpOption();
         for (int i = 0; i < questionsBank.getNumberOfLevels(); i ++) {
             int r = rand.nextInt(3);
             List<Question> levelQuestions = new ArrayList<Question>();
-            for (int k = 0; k<questionsBank.createQuestions().size(); k++) {
-                int levelIndex = i+1;
-                if (questionsBank.createQuestions().get(k).getLevel() == levelIndex) {
-                    levelQuestions.add(questionsBank.createQuestions().get(k));
+            for (Question value : questionsList) {
+                int levelIndex = i + 1;
+                if (value.getLevel() == levelIndex) {
+                    levelQuestions.add(value);
                 }
             }
             Question question = levelQuestions.get(r);
-            handlingOfAnsweringQuestion answeringQuestionHandling = new handlingOfAnsweringQuestion();
-            answeringQuestionHandling.displayAndAnswerQuestion(gS, question, question.getLevel());
+            HandlingOfAnsweringQuestion answeringQuestionHandling = new HandlingOfAnsweringQuestion();
+            answeringQuestionHandling.displayAndAnswerQuestion(gS, question, question.getLevel(), fiftyFiftyHelpOption, askAudienceHelpOption, phoneFriendHelpOption);
         }
     }
 
