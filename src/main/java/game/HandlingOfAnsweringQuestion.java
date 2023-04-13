@@ -19,7 +19,7 @@ public class HandlingOfAnsweringQuestion {
             int option_nr = j+1;
             System.out.println(option_nr + ". " + answersList.get(j).getAnswer());
         }
-        chooseAnswerOption(gS, question, level, answersList);
+        chooseAnswerOption(gS, question, level, answersList, false);
     }
 
     public void displayAndAnswerQuestionOnceAgain(GameSession gS, Question question, int level, List<Answer> answersList) throws SQLException {
@@ -30,13 +30,17 @@ public class HandlingOfAnsweringQuestion {
             int option_nr = j+1;
             System.out.println(option_nr + ". " + answersList.get(j).getAnswer());
         }
-        chooseAnswerOption(gS, question, level, answersList);
+        chooseAnswerOption(gS, question, level, answersList, true);
     }
 
-    public void chooseAnswerOption(GameSession gS, Question question, int level, List<Answer> answersList) throws SQLException {
+    public void chooseAnswerOption(GameSession gS, Question question, int level, List<Answer> answersList, boolean helpRequested) throws SQLException {
         HandlingOfAnswerResult answerResultHandling = new HandlingOfAnswerResult();
         StringScanner scanner = new StringScanner();
-        System.out.println("Introduce the number of the correct answer. " + offerHelpOptions(gS));
+        if (!helpRequested) {
+            System.out.println("Introduce the number of the correct answer. " + offerHelpOptions(gS));
+        } else {
+            System.out.println("Introduce the number of the correct answer: ");
+        }
         String id = scanner.scanString();
         if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
             // in case the answer introduced is correct
@@ -47,18 +51,23 @@ public class HandlingOfAnsweringQuestion {
             else {
                 answerResultHandling.handleIncorrectAnswer(gS);
             }
-        } else if (id.equals("a") && !gS.getAskAudienceHelpOption().optionUsed) {
-            gS.getAskAudienceHelpOption().askAudience(answersList);
-            displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
-        } else if (id.equals("p") && !gS.getPhoneFriendHelpOption().optionUsed) {
-            gS.getPhoneFriendHelpOption().phoneFriend(answersList);
-            displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
-        } else if (id.equals("f") && !gS.getFiftyFiftyHelpOption().optionUsed) {
-            gS.getFiftyFiftyHelpOption().displayFiftyFifty(answersList);
-            displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
+        } else if (!helpRequested) {
+            if(id.equals("a") && !gS.getAskAudienceHelpOption().optionUsed) {
+                gS.getAskAudienceHelpOption().askAudience(answersList);
+                displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
+            } else if (id.equals("p") && !gS.getPhoneFriendHelpOption().optionUsed) {
+                gS.getPhoneFriendHelpOption().phoneFriend(answersList);
+                displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
+            } else if (id.equals("f") && !gS.getFiftyFiftyHelpOption().optionUsed) {
+                gS.getFiftyFiftyHelpOption().displayFiftyFifty(answersList);
+                displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
+            } else {
+                System.out.println("Invalid input. Try again: ");
+                chooseAnswerOption(gS, question, level, answersList, false);
+            }
         } else {
             System.out.println("Invalid input. Try again: ");
-            chooseAnswerOption(gS, question, level, answersList);
+            chooseAnswerOption(gS, question, level, answersList, true);
         }
     }
 
