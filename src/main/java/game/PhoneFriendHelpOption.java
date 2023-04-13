@@ -1,6 +1,5 @@
 package game;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class PhoneFriendHelpOption {
@@ -10,7 +9,7 @@ public class PhoneFriendHelpOption {
         this.optionUsed = false;
     }
 
-    public void phoneFriend (GameSession gS, Question question, List<Answer> list) throws SQLException {
+    public void phoneFriend (List<Answer> list) {
         for (int i=0; i<list.size(); i++) {
             if (list.get(i).isCorrect()) {
                 int id = i+1;
@@ -18,9 +17,6 @@ public class PhoneFriendHelpOption {
                 break;
             }
         }
-        gS.setScore(gS.getScore()+question.getScore());
-        DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
-        System.out.println("\u001B[32m" + "Your current score is " + gS.getScore() + " points." + "\u001B[0m");
         optionUsed = true;
     }
 }
