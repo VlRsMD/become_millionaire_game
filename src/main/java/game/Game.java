@@ -9,12 +9,8 @@ public class Game {
         gS.setScore(0);
         Random rand = new Random();
         DatabaseActions.updateScore(gS.getUuid(), gS.getScore());
-        QuestionsBank questionsBank = new QuestionsBank();
-        List<Question> questionsList = questionsBank.getAllQuestions();
-        FiftyFiftyHelpOption fiftyFiftyHelpOption = new FiftyFiftyHelpOption();
-        AskAudienceHelpOption askAudienceHelpOption = new AskAudienceHelpOption();
-        PhoneFriendHelpOption phoneFriendHelpOption = new PhoneFriendHelpOption();
-        for (int i = 0; i < questionsBank.getNumberOfLevels(); i ++) {
+        List<Question> questionsList = gS.getQuestionsBank().getAllQuestions();
+        for (int i = 0; i < gS.getQuestionsBank().getNumberOfLevels(); i ++) {
             int r = rand.nextInt(3);
             List<Question> levelQuestions = new ArrayList<Question>();
             for (Question value : questionsList) {
@@ -25,7 +21,7 @@ public class Game {
             }
             Question question = levelQuestions.get(r);
             HandlingOfAnsweringQuestion answeringQuestionHandling = new HandlingOfAnsweringQuestion();
-            answeringQuestionHandling.displayAndAnswerQuestion(gS, question, question.getLevel(), fiftyFiftyHelpOption, askAudienceHelpOption, phoneFriendHelpOption);
+            answeringQuestionHandling.displayAndAnswerQuestion(gS, question, question.getLevel());
         }
     }
 
@@ -45,14 +41,5 @@ public class Game {
             System.out.println("Invalid input. Try again: ");
             startGame(gS);
         }
-    }
-
-    // static
-    public static void main(String[] args) throws SQLException, InputMismatchException, IOException {
-        Game game = new Game();
-        GameSession gS = new GameSession();
-        System.out.println("Welcome to the game 'Become a millionaire!'");
-        System.out.println("Do you already have an account? [Yes/No]");
-        game.startGame(gS);
     }
 }

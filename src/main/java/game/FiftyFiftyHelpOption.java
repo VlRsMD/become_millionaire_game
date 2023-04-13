@@ -1,6 +1,5 @@
 package game;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class FiftyFiftyHelpOption {
@@ -10,8 +9,7 @@ public class FiftyFiftyHelpOption {
         this.optionUsed = false;
     }
 
-    public void displayFiftyFifty(GameSession gS, Question question, List<Answer> list, FiftyFiftyHelpOption fiftyFiftyHelpOption, AskAudienceHelpOption askAudienceHelpOption, PhoneFriendHelpOption phoneFriendHelpOption) throws SQLException, InputMismatchException {
-        HandlingOfAnsweringQuestion answeringQuestionHandling = new HandlingOfAnsweringQuestion();
+    public void displayFiftyFifty(List<Answer> list) throws InputMismatchException {
         int rightAnswerIndex = 0;
         int wrongAnswerIndex = 0;
         for (int i=0; i<list.size(); i++) {
@@ -50,8 +48,6 @@ public class FiftyFiftyHelpOption {
         for (int i=0; i<twoOptions.size(); i++) {
             System.out.println("\u001B[34m" + twoOptions.get(i).get(0) + ". " + twoOptions.get(i).get(1) + "\u001B[0m");
         }
-        System.out.println("Choose an option from the above");
-        answeringQuestionHandling.chooseAnswerOption(gS, question, list, fiftyFiftyHelpOption, askAudienceHelpOption, phoneFriendHelpOption);
         optionUsed = true;
     }
 }
