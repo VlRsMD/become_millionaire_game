@@ -8,12 +8,12 @@ public class Authentication {
         StringScanner scanner = new StringScanner();
         String answer = scanner.scanString();
         // try to log in once again
-        if (answer.equals("Try again")) {
+        if ("Try again".equals(answer)) {
             System.out.println("Introduce your username: ");
             logIn(gS);
         }
         // switch to the signup procedure
-        else if (answer.equals("Sign up")) {
+        else if ("Sign up".equals(answer)) {
             System.out.println("Please create an account by introducing your username: ");
             signUp(gS);
         } else {

@@ -28,12 +28,12 @@ public class Game {
     public void startGame(GameSession gS) throws SQLException, IOException {
         Authentication authentication = new Authentication();
         StringScanner scanner = new StringScanner();
-        String y_n = scanner.scanString();
-        if (y_n.equals("Yes")) {
+        String loggedInStatus = scanner.scanString();
+        if ("Yes".equals(loggedInStatus)) {
             System.out.println("Introduce your username: ");
             authentication.logIn(gS);
             play(gS);
-        } else if (y_n.equals("No")) {
+        } else if ("No".equals(loggedInStatus)) {
             System.out.println("Please create an account by introducing your username: ");
             authentication.signUp(gS);
             play(gS);
