@@ -41,10 +41,10 @@ public class HandlingOfAnsweringQuestion {
         } else {
             System.out.println("Introduce the number of the correct answer: ");
         }
-        String id = scanner.scanString();
-        if (id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
+        String input = scanner.scanString();
+        if ("1".equals(input) || "2".equals(input) || "3".equals(input) || "4".equals(input)) {
             // in case the answer introduced is correct
-            if (answersList.get(Integer.parseInt(id) - 1).isCorrect()) {
+            if (answersList.get(Integer.parseInt(input) - 1).isCorrect()) {
                 answerResultHandling.handleCorrectAnswer(gS, question);
             }
             // in case the answer introduced is incorrect
@@ -52,13 +52,13 @@ public class HandlingOfAnsweringQuestion {
                 answerResultHandling.handleIncorrectAnswer(gS);
             }
         } else if (!helpRequested) {
-            if(id.equals("a") && !gS.getAskAudienceHelpOption().optionUsed) {
+            if("a".equals(input) && !gS.getAskAudienceHelpOption().optionUsed) {
                 gS.getAskAudienceHelpOption().askAudience(answersList);
                 displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
-            } else if (id.equals("p") && !gS.getPhoneFriendHelpOption().optionUsed) {
+            } else if ("p".equals(input) && !gS.getPhoneFriendHelpOption().optionUsed) {
                 gS.getPhoneFriendHelpOption().phoneFriend(answersList);
                 displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
-            } else if (id.equals("f") && !gS.getFiftyFiftyHelpOption().optionUsed) {
+            } else if ("f".equals(input) && !gS.getFiftyFiftyHelpOption().optionUsed) {
                 gS.getFiftyFiftyHelpOption().displayFiftyFifty(answersList);
                 displayAndAnswerQuestionOnceAgain(gS, question, level, answersList);
             } else {
