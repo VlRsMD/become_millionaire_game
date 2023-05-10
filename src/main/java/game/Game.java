@@ -13,15 +13,15 @@ public class Game {
         for (int i = 0; i < gS.getQuestionsBank().getNumberOfLevels(); i ++) {
             int r = rand.nextInt(3);
             List<Question> levelQuestions = new ArrayList<Question>();
-            for (Question value : questionsList) {
+            for (Question question : questionsList) {
                 int levelIndex = i + 1;
-                if (value.getLevel() == levelIndex) {
-                    levelQuestions.add(value);
+                if (question.getLevel() == levelIndex) {
+                    levelQuestions.add(question);
                 }
             }
-            Question question = levelQuestions.get(r);
+            Question currentQuestion = levelQuestions.get(r);
             HandlingOfAnsweringQuestion answeringQuestionHandling = new HandlingOfAnsweringQuestion();
-            answeringQuestionHandling.displayAndAnswerQuestion(gS, question, question.getLevel());
+            answeringQuestionHandling.displayAndAnswerQuestion(gS, currentQuestion, currentQuestion.getLevel());
         }
     }
 
